@@ -1,3 +1,12 @@
+# Build artifacts
+build/
+
+# VSCode
+.vscode/
+
+# Python utils
+.venv/
+
 # Prerequisites
 *.d
 
