@@ -18,14 +18,16 @@ int randomInt(int a, int b)
   return a + (arc4random() % (b - a));
 }
 
-float randomFloatFill()
+template <typename T>
+T randomFill()
 {
-  return (float)randomInt(-1, 1) + internalRandomFloat();
+  return (T)randomInt(-1, 1) + (T)internalRandomFloat();
 }
 
-float zeroFill()
+template <typename T>
+T zeroFill()
 {
-  return 0.0;
+  return (T)0;
 }
 
 #endif

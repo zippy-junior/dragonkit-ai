@@ -1,7 +1,10 @@
 #ifndef generator_hpp
 #define generator_hpp
 
-float randomFloatFill();
+template <typename T>
+float randomFill();
+
+template <typename T>
 float zeroFill();
 
 #include "generator.cpp"

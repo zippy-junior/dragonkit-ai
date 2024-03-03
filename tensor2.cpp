@@ -197,13 +197,13 @@ tensor2<T, X, Y> operator+(const tensor2<T, X, Y> &A, const tensor1<T, Y> &B)
 template <typename T, unsigned X, unsigned Y, unsigned Y2>
 tensor2<T, X, Y2> operator*(const tensor2<T, X, Y> &A, const tensor2<T, Y, Y2> &B)
 {
-  tensor2<T, X, Y2> result(0);
+  tensor2<T, X, Y2> result(&zeroFill<T>);
 
-  for (int i = 0; i < X; i++)
+  for (size_t i = 0; i < X; i++)
   {
-    for (int j = 0; j < Y; j++)
+    for (size_t j = 0; j < Y2; j++)
     {
-      for (int k = 0; k < X; k++)
+      for (size_t k = 0; k < Y; k++)
       {
         result(i, j) += A(i, k) * B(k, j);
       }
@@ -215,10 +215,10 @@ tensor2<T, X, Y2> operator*(const tensor2<T, X, Y> &A, const tensor2<T, Y, Y2> &
 template <typename T, unsigned X, unsigned Y>
 tensor2<T, X, Y> operator*(const tensor2<T, X, Y> &A, const double &D)
 {
-  tensor2<T, X, Y> result(&zeroFill);
-  for (size_t row = 0; row < A.getRows(); row++)
+  tensor2<T, X, Y> result(&zeroFill<T>);
+  for (size_t row = 0; row < X; row++)
   {
-    for (size_t col = 0; col < A.getColumns(); col++)
+    for (size_t col = 0; col < Y; col++)
     {
       result(row, col) = A(row, col) * D;
     }
@@ -230,7 +230,7 @@ tensor2<T, X, Y> operator*(const tensor2<T, X, Y> &A, const double &D)
 template <typename T, unsigned X, unsigned Y>
 tensor2<T, Y, X> tensor2<T, X, Y>::transpose()
 {
-  tensor2<T, Y, X> t(0);
+  tensor2<T, Y, X> t(&zeroFill<T>);
   for (int i = 0; i < COLS; i++)
   {
     for (int j = 0; j < ROWS; j++)
@@ -240,23 +240,6 @@ tensor2<T, Y, X> tensor2<T, X, Y>::transpose()
   }
   return t;
 }
-
-template <typename T, unsigned X, unsigned Y>
-tensor2<T, (X > Y ? Y : X), (X > Y ? Y : X)> tensor2<T, X, Y>::product(const tensor2<T, Y, X> &B)
-{
-  tensor2<T, (X > Y ? Y : X), (X > Y ? Y : X)> res(0);
-  for (size_t rowA = 0; rowA < this->ROWS; rowA++)
-  {
-    for (size_t colB = 0; colB < B.getColumns(); colB++)
-    {
-      for (size_t colA = 0; colA < this->COLS; colA++)
-      {
-        res(rowA, colB) += this->mat[rowA][colA] * B(colA, colB);
-      }
-    }
-  }
-  return res;
-};
 
 // //----------------------------------------------------------------------------------------------------
 

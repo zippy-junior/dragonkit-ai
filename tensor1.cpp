@@ -5,12 +5,15 @@
 
 using namespace std;
 
-// CONSTRUCTOR BY (FILL)
+// CONSTRUCTOR BY (FILL FUNCTION)
 template <typename T, unsigned X>
-tensor1<T, X>::tensor1(const T &fill)
+tensor1<T, X>::tensor1(T (*func)())
 {
   COLS = X;
-  mat.fill(fill);
+  for (size_t col = 0; col < COLS; col++)
+  {
+    mat[col] = func();
+  }
 }
 
 // CONSTRUCTOR BY (ARRAY<T>)
@@ -165,22 +168,6 @@ tensor1<T, X> tensor1<T, X>::operator+(const tensor1<T, X> &A)
 //   }
 //   return result;
 // }
-
-// Multiplication of this tensor1 and another
-template <typename T, unsigned X>
-tensor1<T, X> tensor1<T, X>::operator*(const tensor1<T, X> &A)
-{
-  tensor1<T, X> result(0);
-
-  for (int col = 0; col < COLS; col++)
-  {
-    for (int col2 = 0; col < COLS; col++)
-    {
-      result(col) += this->mat[col] * A(col2);
-    }
-  }
-  return result;
-}
 
 template <typename T, unsigned X, unsigned Y>
 tensor1<T, X> operator*(const tensor1<T, Y> &A, const tensor2<T, X, Y> &B)

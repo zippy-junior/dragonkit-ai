@@ -2,7 +2,7 @@
 #define layer_dense
 #include "tensor.hpp"
 
-template <typename T, unsigned Inputs, unsigned Neurons>
+template <typename T, unsigned Inputs, unsigned Neurons, unsigned BatchSize>
 class layerDense
 {
 private:
@@ -12,7 +12,7 @@ private:
 public:
   layerDense();
   ~layerDense();
-  void forward(const tensor2<float, 3, 3> &inputs);
+  tensor2<T, BatchSize, Neurons> forward(tensor2<T, BatchSize, Inputs> &inputs);
   void printWeights();
   void printBias();
 };
