@@ -15,7 +15,7 @@ int main()
   layerDense<double, 2, 4, 100> test;
   tensor2<double, 100, 4> res = test.forward(TEST_DATA);
   // res.printTensor();
-  tensor2<double, 100, 4> processed = ReLU<double, 100, 4>(res);
+  tensor2<double, 100, 4> processed = SoftMax<double, 100, 4>(res);
   processed.printTensor();
   return 0;
 }
