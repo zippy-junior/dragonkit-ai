@@ -90,7 +90,7 @@ void tensor1<T, X>::printTensor()
 
 // Get individual element
 template <typename T, unsigned X>
-T &tensor1<T, X>::getElement(int col)
+T &tensor1<T, X>::getElement(unsigned col)
 {
   return this->mat[col];
 }
@@ -108,7 +108,7 @@ T &tensor1<T, X>::getElement(int col)
 
 // Access individual elements
 template <typename T, unsigned X>
-T &tensor1<T, X>::operator()(const int &col)
+T &tensor1<T, X>::operator()(const unsigned &col)
 {
   return this->mat[col];
 }

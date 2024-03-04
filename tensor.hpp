@@ -15,8 +15,8 @@ template <typename T, unsigned X, unsigned Y>
 class tensor2
 {
 private:
-  int ROWS;
-  int COLS;
+  unsigned ROWS;
+  unsigned COLS;
   std::array<std::array<T, Y>, X> mat;
 
 public:
@@ -24,7 +24,7 @@ public:
   // tensor2(const T &init);
 
   // Constructor 2
-  tensor2(T (*func)());
+  tensor2(T (&func)());
 
   // Constructor 3
   tensor2(const std::array<std::array<T, Y>, X> &arr);
@@ -37,17 +37,17 @@ public:
 
   // PUBLIC METHODS
 
-  int getRows() const;    // Get tensor2 Size.
-  int getColumns() const; // Get tensor2 Size.
-  void printTensor();     // Print complete tensor2.
+  unsigned getRows() const;    // Get tensor2 Size.
+  unsigned getColumns() const; // Get tensor2 Size.
+  void printTensor();          // Print complete tensor2.
   // T &getElement(int row, int col);               // Get individual element.
   void updateElement(int row, int col, T value); // Update individual
   // element.
 
   // OPERATORS
 
-  T &operator()(const int &row, const int &col);
-  const T &operator()(const unsigned &row, const unsigned &col) const;
+  T &operator()(const size_t &row, const size_t &col);
+  const T &operator()(const size_t &row, const size_t &col) const;
   tensor2<T, X, Y> &operator=(const tensor2<T, X, Y> &A);
   tensor2<T, X, Y> operator+(const tensor2<T, X, Y> &A);
   // tensor2<T> operator-(const tensor2<T> &A);
@@ -60,7 +60,7 @@ template <typename T, unsigned X>
 class tensor1
 {
 private:
-  int COLS;
+  unsigned COLS;
   std::array<T, X> mat;
 
 public:
@@ -76,15 +76,15 @@ public:
 
   // PUBLIC METHODS
 
-  int getColumns() const; // Get Matrix Size.
-  void printTensor();     // Print complete matrix.
-  T &getElement(int col); // Get individual element.
+  int getColumns() const;      // Get Matrix Size.
+  void printTensor();          // Print complete matrix.
+  T &getElement(unsigned col); // Get individual element.
   // void updateElement(int row, int col, T value); // Update individual
   // element.
 
   // OPERATORS
 
-  T &operator()(const int &col);
+  T &operator()(const unsigned &col);
   const T &operator()(const unsigned &col) const;
   tensor1<T, X> &operator=(const tensor1<T, X> &A);
   tensor1<T, X> operator+(const tensor1<T, X> &A);

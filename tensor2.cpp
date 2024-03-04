@@ -4,6 +4,7 @@
 #include "tensor.hpp"
 #include "generator.hpp"
 #include <array>
+#include <iostream>
 
 using namespace std;
 
@@ -22,7 +23,7 @@ using namespace std;
 
 // CONSTRUCTOR BY (FILL FUNCTION)
 template <typename T, unsigned X, unsigned Y>
-tensor2<T, X, Y>::tensor2(T (*func)())
+tensor2<T, X, Y>::tensor2(T (&func)())
 // tensor2::tensor2(const float init)
 {
   ROWS = X;
@@ -69,7 +70,7 @@ tensor2<T, X, Y>::~tensor2()
 
 // Get number of rows
 template <typename T, unsigned X, unsigned Y>
-int tensor2<T, X, Y>::getRows() const
+unsigned tensor2<T, X, Y>::getRows() const
 // int tensor2::getRows()
 {
   return this->ROWS;
@@ -77,7 +78,7 @@ int tensor2<T, X, Y>::getRows() const
 
 // Get number of columns
 template <typename T, unsigned X, unsigned Y>
-int tensor2<T, X, Y>::getColumns() const
+unsigned tensor2<T, X, Y>::getColumns() const
 // int tensor2::getColumns()
 {
   return this->COLS;
@@ -88,14 +89,14 @@ template <typename T, unsigned X, unsigned Y>
 void tensor2<T, X, Y>::printTensor()
 // void tensor2::printtensor2()
 {
-  int r = getRows();
-  int c = getColumns();
+  unsigned r = getRows();
+  unsigned c = getColumns();
   int limit = c - 1;
   cout << "tensor2[" << r << "][" << c << "]:" << endl
        << endl;
-  for (int i = 0; i < r; i++)
+  for (size_t i = 0; i < r; i++)
   {
-    for (int j = 0; j < c; j++)
+    for (size_t j = 0; j < c; j++)
     {
       if (j == limit)
       {
@@ -124,14 +125,14 @@ void tensor2<T, X, Y>::updateElement(int row, int col, T value)
 
 // Access individual elements
 template <typename T, unsigned X, unsigned Y>
-T &tensor2<T, X, Y>::operator()(const int &row, const int &col)
+T &tensor2<T, X, Y>::operator()(const size_t &row, const size_t &col)
 {
   return this->mat[row][col];
 }
 
 // Access individual elements const version
 template <typename T, unsigned X, unsigned Y>
-const T &tensor2<T, X, Y>::operator()(const unsigned &row, const unsigned &col)
+const T &tensor2<T, X, Y>::operator()(const size_t &row, const size_t &col)
     const
 {
   return this->mat[row][col];
@@ -144,12 +145,12 @@ tensor2<T, X, Y> &tensor2<T, X, Y>::operator=(const tensor2<T, X, Y> &A)
   if (&A == this)
     return *this;
 
-  int new_rows = A.getRows();
-  int new_cols = A.getColumns();
+  unsigned new_rows = A.getRows();
+  unsigned new_cols = A.getColumns();
 
-  for (int i = 0; i < new_rows; i++)
+  for (size_t i = 0; i < new_rows; i++)
   {
-    for (int j = 0; j < new_cols; j++)
+    for (size_t j = 0; j < new_cols; j++)
     {
       mat[i][j] = A(i, j);
     }
@@ -167,9 +168,9 @@ tensor2<T, X, Y> tensor2<T, X, Y>::operator+(const tensor2<T, X, Y> &A)
 {
   tensor2<T, X, Y> result(0);
 
-  for (int i = 0; i < ROWS; i++)
+  for (size_t i = 0; i < ROWS; i++)
   {
-    for (int j = 0; j < COLS; j++)
+    for (size_t j = 0; j < COLS; j++)
     {
       // T val = A.getElement(i, j);
       T newVal = this->mat[i][j] + A(i, j);
@@ -182,12 +183,13 @@ tensor2<T, X, Y> tensor2<T, X, Y>::operator+(const tensor2<T, X, Y> &A)
 template <typename T, unsigned X, unsigned Y>
 tensor2<T, X, Y> operator+(const tensor2<T, X, Y> &A, const tensor1<T, Y> &B)
 {
-  tensor2<T, X, Y> result(0);
-  for (int row = 0; row < Y; row++)
+  tensor2<T, X, Y> result(zeroFill<T>);
+  for (size_t row = 0; row < X; row++)
   {
-    for (int col = 0; col < X; col++)
+    for (size_t col = 0; col < Y; col++)
     {
-      result(row, col) = A(row, col) + B(col);
+      // cout << row << " " << A(row, col) << " " << B(col) << endl;
+      result(row, col) += A(row, col) + B(col);
     }
   }
   return result;
@@ -197,7 +199,7 @@ tensor2<T, X, Y> operator+(const tensor2<T, X, Y> &A, const tensor1<T, Y> &B)
 template <typename T, unsigned X, unsigned Y, unsigned Y2>
 tensor2<T, X, Y2> operator*(const tensor2<T, X, Y> &A, const tensor2<T, Y, Y2> &B)
 {
-  tensor2<T, X, Y2> result(&zeroFill<T>);
+  tensor2<T, X, Y2> result(zeroFill<T>);
 
   for (size_t i = 0; i < X; i++)
   {
@@ -215,7 +217,7 @@ tensor2<T, X, Y2> operator*(const tensor2<T, X, Y> &A, const tensor2<T, Y, Y2> &
 template <typename T, unsigned X, unsigned Y>
 tensor2<T, X, Y> operator*(const tensor2<T, X, Y> &A, const double &D)
 {
-  tensor2<T, X, Y> result(&zeroFill<T>);
+  tensor2<T, X, Y> result(zeroFill<T>);
   for (size_t row = 0; row < X; row++)
   {
     for (size_t col = 0; col < Y; col++)
@@ -231,9 +233,9 @@ template <typename T, unsigned X, unsigned Y>
 tensor2<T, Y, X> tensor2<T, X, Y>::transpose()
 {
   tensor2<T, Y, X> t(&zeroFill<T>);
-  for (int i = 0; i < COLS; i++)
+  for (size_t i = 0; i < COLS; i++)
   {
-    for (int j = 0; j < ROWS; j++)
+    for (size_t j = 0; j < ROWS; j++)
     {
       t.updateElement(i, j, this->mat[j][i]);
     }

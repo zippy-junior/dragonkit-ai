@@ -9,8 +9,8 @@
 using namespace std;
 
 template <typename T, unsigned Inputs, unsigned Neurons, unsigned BatchSize>
-layerDense<T, Inputs, Neurons, BatchSize>::layerDense() : weights(&randomFill<T>),
-                                                          bias(&zeroFill<T>)
+layerDense<T, Inputs, Neurons, BatchSize>::layerDense() : weights(randomFill<T>),
+                                                          bias(zeroFill<T>)
 {
   this->weights = this->weights * 0.01;
 }
