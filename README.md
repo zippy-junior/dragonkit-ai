@@ -1,4 +1,4 @@
-<img src="zago_ai_logo.png" alt="drawing" width="200" style="border-radius: 1rem"/>
+<img src="static/logo.png" alt="drawing" width="200" style="border-radius: 1rem"/>
 
 <h1> Dragon-kit</h1>
 
