@@ -60,7 +60,7 @@ template <typename T, unsigned X>
 class tensor1
 {
 private:
-  unsigned COLS;
+  unsigned ROWS;
   std::array<T, X> mat;
 
 public:
@@ -76,9 +76,9 @@ public:
 
   // PUBLIC METHODS
 
-  int getColumns() const;      // Get Matrix Size.
+  int getRows() const;         // Get Tensor 1 Size.
   void printTensor();          // Print complete matrix.
-  T &getElement(unsigned col); // Get individual element.
+  T &getElement(unsigned row); // Get individual element.
   // void updateElement(int row, int col, T value); // Update individual
   // element.
 

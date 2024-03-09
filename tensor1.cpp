@@ -9,10 +9,10 @@ using namespace std;
 template <typename T, unsigned X>
 tensor1<T, X>::tensor1(T (*func)())
 {
-  COLS = X;
-  for (size_t col = 0; col < COLS; col++)
+  ROWS = X;
+  for (size_t row = 0; row < ROWS; row++)
   {
-    mat[col] = func();
+    mat[row] = func();
   }
 }
 
@@ -20,7 +20,7 @@ tensor1<T, X>::tensor1(T (*func)())
 template <typename T, unsigned X>
 tensor1<T, X>::tensor1(const array<T, X> &arr)
 {
-  COLS = arr.size();
+  ROWS = arr.size();
   mat = arr;
 }
 
@@ -29,7 +29,7 @@ template <typename T, unsigned X>
 tensor1<T, X>::tensor1(const tensor1<T, X> &A)
 {
   mat = A.mat;
-  COLS = A.COLS;
+  ROWS = A.ROWS;
 }
 
 // DESTRUCTOR
@@ -46,10 +46,10 @@ tensor1<T, X>::~tensor1()
 
 // Get number of columns
 template <typename T, unsigned X>
-int tensor1<T, X>::getColumns() const
+int tensor1<T, X>::getRows() const
 // int tensor1::getColumns()
 {
-  return this->COLS;
+  return this->ROWS;
 }
 
 // Print whole tensor1
@@ -57,19 +57,18 @@ template <typename T, unsigned X>
 void tensor1<T, X>::printTensor()
 // void tensor1::printTensor()
 {
-  int c = getColumns();
-  int limit = c - 1;
-  cout << "tensor1[" << c << "]:" << endl
+  int limit = X - 1;
+  cout << "tensor1[" << X << "]:" << endl
        << endl;
-  for (int i = 0; i < c; i++)
+  for (int row = 0; row < X; row++)
   {
-    if (i == limit)
+    if (row == limit)
     {
-      cout << this->mat[i];
+      cout << this->mat[row];
     }
     else
     {
-      cout << this->mat[i] << ",";
+      cout << this->mat[row] << ",";
     }
   }
   cout << endl;
@@ -90,9 +89,9 @@ void tensor1<T, X>::printTensor()
 
 // Get individual element
 template <typename T, unsigned X>
-T &tensor1<T, X>::getElement(unsigned col)
+T &tensor1<T, X>::getElement(unsigned row)
 {
-  return this->mat[col];
+  return this->mat[row];
 }
 
 // Update individual value
@@ -127,13 +126,11 @@ tensor1<T, X> &tensor1<T, X>::operator=(const tensor1<T, X> &A)
   if (&A == this)
     return *this;
 
-  int new_cols = A.getColumns();
-
-  for (int col = 0; col < new_cols; col++)
+  for (int row = 0; row < X; row++)
   {
-    mat[col] = A(col);
+    mat[row] = A(row);
   }
-  COLS = new_cols;
+  ROWS = X;
   return *this;
 }
 
@@ -142,11 +139,11 @@ template <typename T, unsigned X>
 tensor1<T, X> tensor1<T, X>::operator+(const tensor1<T, X> &A)
 {
   tensor1<T, X> result(0);
-  for (int col = 0; col < COLS; col++)
+  for (int row = 0; row < ROWS; row++)
   {
     // T val = A.getElement(i, j);
-    T newVal = this->mat[col] + A(col);
-    result(col) = newVal;
+    T newVal = this->mat[row] + A(row);
+    result(row) = newVal;
   }
   return result;
 }

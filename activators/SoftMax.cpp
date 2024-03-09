@@ -1,3 +1,6 @@
+#ifndef soft_max_cpp
+#define soft_max_cpp
+
 #include "../tensor.hpp"
 #include "../generator.hpp"
 #include <cmath>
@@ -6,7 +9,7 @@
 double EXPONENT = 2.71828182846;
 
 template <typename T, unsigned X, unsigned Y>
-tensor2<T, X, Y> SoftMax(const tensor2<T, X, Y> &input)
+tensor2<T, X, Y> SoftMax<T, X, Y>::forward(const tensor2<T, X, Y> &input)
 {
   tensor2<T, X, Y> result(zeroFill<T>);
   for (size_t row = 0; row < X; row++)
@@ -29,3 +32,12 @@ tensor2<T, X, Y> SoftMax(const tensor2<T, X, Y> &input)
   }
   return result;
 }
+
+template <typename T, unsigned X, unsigned Y>
+tensor2<T, X, Y> SoftMax<T, X, Y>::backward(const tensor2<T, X, Y> &input)
+{
+  tensor2<T, X, Y> result(zeroFill<T>);
+  return result;
+}
+
+#endif
